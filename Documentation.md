@@ -67,7 +67,7 @@ One of the most crucial elements to Data Pre-processing is getting rid of the un
 https://medium.com/nanonets/topic-modeling-with-lsa-psla-lda-and-lda2vec-555ff65b0b05
 https://towardsdatascience.com/lda2vec-word-embeddings-in-topic-models-4ee3fc4b2843
 [2] Latent Semantic Analysis 
-https://en.wikipedia.org/wiki/Latent_semantic_analysis 
+https://en.wikipedia.org/wiki/Latent_semantic_analysis
 [3] Christopher Moody. word2vec, LDA, and introducing a new hybrid algorithm: lda2vec.
 https://www.slideshare.net/ChristopherMoody3/word2vec-lda-and-introducing-a-new-hybrid-alg orithm-lda2vec-57135994
 [4] BioPython https://biopython.org/wiki/Documentation

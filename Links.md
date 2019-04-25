@@ -17,3 +17,9 @@
 15. [Labeled-LDA-Python](https://github.com/JoeZJH/Labeled-LDA-Python?files=1)
 16. [Pole-DL](http://pole-dl.cs.manchester.ac.uk/experiments.html)
 17. [Pubmed Topic Modeling](https://github.com/erpfeiffer/pubmed-topic-extraction?files=1)
+-----
+18. [Topic Modeling Visualisation](https://www.machinelearningplus.com/nlp/topic-modeling-visualization-how-to-present-results-lda-models/)
+19. [Topic Modelling in Python with NLTK and Gensim](https://towardsdatascience.com/topic-modelling-in-python-with-nltk-and-gensim-4ef03213cd21)
+20. [LDA Topic Modeling and pyLDAvis Visualization](https://medium.com/@sherryqixuan/topic-modeling-and-pyldavis-visualization-86a543e21f58)
+21. [Python Environment Setup for Deep Learning on Windows 10](https://towardsdatascience.com/python-environment-setup-for-deep-learning-on-windows-10-c373786e36d1)
+

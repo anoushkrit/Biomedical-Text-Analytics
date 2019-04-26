@@ -56,3 +56,22 @@ def searchpubmed(return_max=20, database=None, searchqueryinput=None):
         return_max))
     queryids = (searchquery, queryresponse['IdList'])
     return queryids
+
+def fetchrecord(inputids, numberofrecs, queryinput):
+    print('Downloading Pubmed Records...')
+    handle = Entrez.efetch("pubmed", id=str(inputids), rettype="medline", retmode="text")
+    records = Medline.parse(handle)
+    records = list(records)
+
+    recordsdf = pd.DataFrame(records)
+    print('\nFeatures available: {}'.format(recordsdf.columns.values.tolist()))
+    recordsdf['Searched'] = str(queryinput)
+    reckeys = ['PMID', 'TI', 'AB', 'DP', 'PHST', 'Searched']
+    print("\nReturning {} features : {} ".format((len(reckeys) - 1), reckeys[0:(len(reckeys) - 1)]))
+    recordsselectdf = recordsdf[reckeys]
+
+    recordsdf.to_csv('full_records' + str(numberofrecs) + '.csv')
+    recordsselectdf.to_csv('selected_records' + str(numberofrecs) + '.csv')
+
+    handle.close()
+    return recordsselectdf

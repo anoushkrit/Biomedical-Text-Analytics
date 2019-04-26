@@ -75,3 +75,19 @@ def fetchrecord(inputids, numberofrecs, queryinput):
 
     handle.close()
     return recordsselectdf
+
+
+def getdata(numberofrecs):
+    print('Checking Archives...')
+    try:
+        readrecordsdf = pd.read_csv(('selected_records' + str(numberofrecs) + '.csv'), index_col=0)
+        queryinput = readrecordsdf['Searched'][0]
+        print('{} records retrieved for \'{}\''.format(numberofrecs, queryinput))
+    except OSError:
+        if int(numberofrecs) < 10001:
+            [queryinput, idlist] = searchpubmed(return_max=numberofrecs, database="pubmed")
+            readrecordsdf = fetchrecord(idlist, numberofrecs, queryinput)
+        else:
+            print('please check size and format restrictions')
+            sys.exit()
+    return {'SearchQuery': queryinput, 'RecordsDataFrame': readrecordsdf}

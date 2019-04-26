@@ -91,3 +91,67 @@ def getdata(numberofrecs):
             print('please check size and format restrictions')
             sys.exit()
     return {'SearchQuery': queryinput, 'RecordsDataFrame': readrecordsdf}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    ## Get Data
+    numberofrecs = input("How many listings should we download (100 < recommended < 10,000)? \n")
+    numsearchtopics = min(max(10, round(int(numberofrecs) / 200, -1)), 30)  # limits for num topics
+    print('\nSeek {} topics in {} documents'.format(int(numsearchtopics), int(numberofrecs)))
+
+    getdatadict = getdata(numberofrecs)
+    querysearched = getdatadict['SearchQuery']
+    getresultdf = getdatadict['RecordsDataFrame']
+    cleanedresultdf = cleandata(getresultdf)
+
+    ##Topic Model:
+    customstopwords = stop_words.get_stop_words('en', cache=False)
+    newstopwords = ['effect', 'increased', 'increase', 'decreased', 'decrease', 'inhibit', 'result', \
+                    'role', 'regulate', 'via', 'associated', 'associate', 'new', 'inhibitor', 'antagonist', 'agonist', \
+                    'dependent', 'independent']
+    for term in newstopwords:
+        customstopwords.append(term)
+    for term in querysearched.split(", "):
+        customstopwords.append(term)
+
+    cleanedresultdf['TokensTitles'] = tokenizefortopicmodel(cleanedresultdf.TI, stopwords=customstopwords)
+    cleanedresultdf['TokensAbstracts'] = tokenizefortopicmodel(cleanedresultdf.AB, stopwords=customstopwords)
+
+    topicmodeldict = topicmodel(cleanedresultdf.TokensTitles, cleanedresultdf.TokensAbstracts,
+                                numtopics=numsearchtopics, numwords=10)
+    term_dictionary = topicmodeldict['Dictionary']
+    topic_terms_df = topicmodeldict['TopicTermsDF']
+    doc_similarity_matrix = topicmodeldict['SimilarityMatrix']
+
+    cleanedresultdf['DocTopics'] = topicmodeldict[
+        'DocTopProbAbs']  # topics per doc, tuples (topic, probability), ranked, for topics > minimum probability
+    cleanedresultdf['DocTopicsTop'] = topicmodeldict['DocTopProbAbsHighest']  # top topic per doc
+
+    ## Inspect
+    print(topic_terms_df['TopicTerms'])
+    topicnetwork(topic_terms_df, numsearchtopics)
+
+    pubyearhistogram(cleanedresultdf, topicplotted=querysearched)
+
+    listoftopicdfs = []
+    for t in range(int(numsearchtopics)):
+        topicdocdf = cleanedresultdf[cleanedresultdf.DocTopicsTop == t]
+        pubyearhistogram(topicdocdf, "Topic " + str(t))
+        listoftopicdfs.append(topicdocdf.ReleaseDate.dt.year)
+
+    topicdistributionhistogram(listoftopicdfs, cleanedresultdf)
+
+    print('\nDone')

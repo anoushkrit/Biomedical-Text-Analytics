@@ -45,10 +45,8 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-def searchpubmed(return_max=20, database=None):
-    print('Search Pubmed')
-
-    searchqueryinput= "cervical"
+def searchpubmed(return_max=20, database=None, searchqueryinput=None):
+    print('Search' + database)
     if searchqueryinput:
         searchquery = searchqueryinput
     handle = Entrez.esearch(db=database, term=searchquery, retmax=return_max)  # retmax is 20 by esearch default

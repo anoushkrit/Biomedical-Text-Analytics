@@ -92,7 +92,22 @@ def getdata(numberofrecs):
             sys.exit()
     return {'SearchQuery': queryinput, 'RecordsDataFrame': readrecordsdf}
 
-
+def topicnetwork(inputarray, numtops):
+    plt.figure()
+    topiclist = []
+    for i in range(int(numtops)):
+        topiclist.append('Topic ' + str(i))
+    G = nx.Graph()
+    G.add_nodes_from(topiclist)
+    for i in range(int(numtops)):
+        getstarseries = []
+        getstarseries.append(topiclist[i])
+        for term in inputarray['TopicTerms'][i]:
+            getstarseries.append(term)
+        G.add_star(getstarseries)
+    nx.draw_networkx(G, node_size=10, edge_color='r', font_color='k', font_weight='bold')
+    plt.title('Topic Term Distribution Network')
+    plt.show()
 
 
 

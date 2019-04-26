@@ -44,3 +44,17 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 !pip install warnings
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+def searchpubmed(return_max=20, database=None):
+    print('Search Pubmed')
+
+    searchqueryinput= "cervical"
+    if searchqueryinput:
+        searchquery = searchqueryinput
+    handle = Entrez.esearch(db=database, term=searchquery, retmax=return_max)  # retmax is 20 by esearch default
+    queryresponse = Entrez.read(handle)
+    handle.close()
+    print("\n" + queryresponse['Count'] + " results available for \'" + str(searchquery) + "\', returning " + str(
+        return_max))
+    queryids = (searchquery, queryresponse['IdList'])
+    return queryids
